@@ -16,13 +16,14 @@ public interface StoricoDebitoRepository extends JpaRepository<StoricoDebito,Int
 
 
 
-    @Query(value = "select new org.experimental_players.debitiApi.responses.SearchDebitiResponse(CONCAT(a.nome , ' ' , a.cognome), CONCAT(a.nome , ' ' , a.cognome),  " +
+    @Query(value = "select new org.experimental_players.debitiApi.responses.SearchDebitiResponse(CONCAT(a1.nome , ' ' , a1.cognome),CONCAT(a2.nome , ' ' , a2.cognome) , " +
             " sd.dataInserimento, sd.dataSaldato, sd.debito, sd.saldato ) from StoricoDebito sd " +
-            " join Anagrafica a on a.id = sd.utenteDebitore.id " +
-            " where ((upper(a.nome) like :debitore and :debitore <> '') or (upper(a.cognome) like :debitore and :debitore <> '') " +
-            " or (concat(upper(a.nome), ' ', upper(a.cognome)) like :debitore and :debitore <> '') or (a.nome is not null  and :debitore = '' ))   " +
-            " and ((upper(a.nome) like :creditore and :creditore <> '') or (upper(a.cognome) like :creditore and :creditore <> '') " +
-            " or (concat(upper(a.nome), ' ', upper(a.cognome)) like :debitore and :creditore <> '') or (a.nome is not null  and :creditore = '' ))  " +
+            " join Anagrafica a1 on a1.id = sd.utenteDebitore.id " +
+            " join Anagrafica a2 on a2.id = sd.utenteCreditore.id " +
+            " where ((upper(a1.nome) like :debitore and :debitore <> '') or (upper(a1.cognome) like :debitore and :debitore <> '') " +
+            " or (concat(upper(a1.nome), ' ', upper(a1.cognome)) like :debitore and :debitore <> '') or (a1.nome is not null  and :debitore = '' ))   " +
+            " and ((upper(a2.nome) like :creditore and :creditore <> '') or (upper(a2.cognome) like :creditore and :creditore <> '') " +
+            " or (concat(upper(a2.nome), ' ', upper(a2.cognome)) like :debitore and :creditore <> '') or (a2.nome is not null  and :creditore = '' ))  " +
             " and ((sd.debito >= :debitoDa and :debitoDa is not null) or (sd.debito >= 0 and :debitoDa is null)) " +
             " and ((sd.debito <= :debitoA and :debitoA is not null) or (sd.debito >= 0 and :debitoA is null )) " +
             " and ( (coalesce(:dataInsDa, null) is null and coalesce(:dataInsA, null) is null) or ((coalesce(sd.dataInserimento, null) is not null) " +
