@@ -1,4 +1,3 @@
-/*
 package org.experimental_players.debitiApi.controllers;
 
 
@@ -83,7 +82,7 @@ public class UserControllerLogin extends BaseController{
         return httpEntity;
 
     }
-
+*/
 
     private Anagrafica authenticate(String username, String password) throws Exception {
 
@@ -100,4 +99,3 @@ public class UserControllerLogin extends BaseController{
     }
 }
 
- */
