@@ -13,7 +13,7 @@ import org.experimental_players.debitiApi.services.DebitoService;
 @Slf4j
 @RestController
 @RequestMapping(ApiMappings.MAP_DEBITO)
-public class DebitoController {
+public class DebitoController extends BaseController{
 
     @Autowired
     DebitoService debitoService;
@@ -31,5 +31,21 @@ public class DebitoController {
         return new HttpEntity<>(storicoPage);
 
     }
+//
+//    @PostMapping(ApiMappings.INSERT)
+//    public HttpEntity<?> insert(@RequestBody SearchDebitiRequest searchDebitiRequest){
+//
+//
+//        log.debug("Begin findAll()...");
+//        Page<SearchDebitiResponse> storicoPage = debitoService.insert(searchDebitiRequest);
+//
+//        log.info(storicoPage.toString());
+//
+//        log.debug("End findAll()...");
+//        return new HttpEntity<>(storicoPage);
+//
+//    }
+
+
 
 }

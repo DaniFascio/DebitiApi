@@ -12,7 +12,7 @@ import org.experimental_players.debitiApi.services.AnagraficaService;
 @Slf4j
 @RestController
 @RequestMapping(ApiMappings.MAP_ANAGRAFICA)
-public class AnagraficaController {
+public class AnagraficaController extends BaseController{
 
     @Autowired
     AnagraficaService anagraficaService;

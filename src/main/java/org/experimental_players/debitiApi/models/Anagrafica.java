@@ -31,5 +31,10 @@ public class Anagrafica {
     @ManyToOne
     private StatoUtente statoUtente;
 
+    @Column(name = "username")
+    private String username;
+
+    @Column(name = "password")
+    private String password;
 
 }
