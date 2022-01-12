@@ -4,7 +4,7 @@ package org.experimental_players.debitiApi.controllers;
 import lombok.extern.log4j.Log4j2;
 import org.experimental_players.debitiApi.configs.ApiMappings;
 import org.experimental_players.debitiApi.configs.EnumStatoUtente;
-import org.experimental_players.debitiApi.configs.EnumStatus;
+import org.experimental_players.debitiApi.configs.Status;
 import org.experimental_players.debitiApi.models.Anagrafica;
 import org.experimental_players.debitiApi.repositories.AnagraficaRepository;
 import org.experimental_players.debitiApi.requests.LoginRequest;
@@ -12,9 +12,6 @@ import org.experimental_players.debitiApi.services.AnagraficaService;
 import org.experimental_players.debitiApi.services.StatoUtenteService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpEntity;
-import org.springframework.security.authentication.BadCredentialsException;
-import org.springframework.security.authentication.DisabledException;
-import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.web.bind.annotation.*;
 
 
@@ -41,7 +38,7 @@ public class UserControllerLogin extends BaseController{
 
         HttpEntity<?> httpEntity;
 
-        log.info("BEGIN Login Utente.");
+        log.debug("BEGIN Login Utente.");
 
         Anagrafica utente = anagraficaService.getUserByUsername(authenticationRequest.getUsername());
         if (utente != null) {
@@ -89,11 +86,11 @@ public class UserControllerLogin extends BaseController{
         Anagrafica anagrafica;
 
         try {
-            log.info("ESEGUO IL TENTATIVO DI AUTENTICAZIONE ...");
+            log.debug("ESEGUO IL TENTATIVO DI AUTENTICAZIONE ...");
             anagrafica = anagraficaService.getAuth(username, password);
         } catch (Exception e) {
             log.warn("UTENTE DISABILITATO");
-            throw new Exception(EnumStatus.ERR_GENERICO.getKey());
+            throw new Exception(Status.ERR_GENERICO.getKey());
         }
         return anagrafica;
     }

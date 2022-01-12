@@ -1,7 +1,7 @@
 package org.experimental_players.debitiApi.services.impls;
 
 import lombok.extern.slf4j.Slf4j;
-import org.experimental_players.debitiApi.configs.EnumStatus;
+import org.experimental_players.debitiApi.configs.Status;
 import org.experimental_players.debitiApi.exceptions.UserException;
 import org.experimental_players.debitiApi.models.Anagrafica;
 import org.experimental_players.debitiApi.repositories.AnagraficaRepository;
@@ -63,7 +63,7 @@ public class AnagraficaServiceImpl implements AnagraficaService {
     @Override
     @Transactional(readOnly = true)
     public Anagrafica getAuth(String username, String password) throws UserException {
-        log.info("BEGIN metodo ricerca USER da email e password per AUTENTICAZIONE...");
+        log.debug("BEGIN metodo ricerca USER da email e password per AUTENTICAZIONE...");
         Anagrafica user;
         try {
             log.debug("...preparazione della ricerca...");
@@ -75,14 +75,14 @@ public class AnagraficaServiceImpl implements AnagraficaService {
             else {
                 optUser = anagraficaRepository.findAnagraficaByUsername(username);
                 if (optUser.isPresent()) {
-                    throw new UserException(EnumStatus.ERR_AUTHORIZATION_PASSWORD.getKey());
+                    throw new UserException(Status.ERR_AUTHORIZATION_PASSWORD.getKey());
                 } else
-                    throw new UserException(EnumStatus.ERR_CREDENZIALI.getKey());
+                    throw new UserException(Status.ERR_CREDENZIALI.getKey());
             }
 
         } catch (Exception e) {
             log.error("Exception occurs{}", e);
-            throw new UserException(EnumStatus.ERR_GENERICO.getKey());
+            throw new UserException(Status.ERR_GENERICO.getKey());
         }
 
         return user;
@@ -92,7 +92,7 @@ public class AnagraficaServiceImpl implements AnagraficaService {
     @Override
     @Transactional(readOnly = true)
     public Anagrafica getUserById(Integer id) throws UserException {
-        log.info("BEGIN metodo di ricerca User con id [{}]...", id);
+        log.debug("BEGIN metodo di ricerca User con id [{}]...", id);
         Anagrafica user;
         try {
             log.debug("...preparazione della ricerca dell'utente...");
@@ -100,12 +100,12 @@ public class AnagraficaServiceImpl implements AnagraficaService {
             log.debug("...ricerca conclusa...");
         } catch (NoSuchElementException e) {
             log.error("Exception occurs{}", e);
-            throw new UserException(EnumStatus.WARN_NO_SUCH_ELEMENT.getKey());
+            throw new UserException(Status.WARN_NO_SUCH_ELEMENT.getKey());
         } catch (Exception e) {
             log.error("Exception occurs{}", e);
-            throw new UserException(EnumStatus.ERR_GENERICO.getKey());
+            throw new UserException(Status.ERR_GENERICO.getKey());
         }
-        log.info("...END metodo di ricerca User per id");
+        log.debug("...END metodo di ricerca User per id");
         return user;
     }
 
@@ -113,10 +113,10 @@ public class AnagraficaServiceImpl implements AnagraficaService {
     @Override
     @Transactional(rollbackFor = UserException.class)
     public void updatePassword(Integer idUser, String password) throws UserException {
-        log.info("BEGIN metodo di update della password per l'utente con id [{}]", idUser);
+        log.debug("BEGIN metodo di update della password per l'utente con id [{}]", idUser);
         Anagrafica user = getUserById(idUser);
         if (user == null)
-            throw new UserException(EnumStatus.ERR_GENERICO.getKey());
+            throw new UserException(Status.ERR_GENERICO.getKey());
         user.setPassword(password);
         try {
             log.debug("...preparazione al salvataggio della nuova password...");
@@ -124,23 +124,23 @@ public class AnagraficaServiceImpl implements AnagraficaService {
             log.debug("...salvataggio concluso...");
         } catch (DataIntegrityViolationException e) {
             log.error("DataIntegrityViolationException Occurs{}", e);
-            throw new UserException(EnumStatus.ERR_DATA_INTEGRITY_VIOLATION.getKey());
+            throw new UserException(Status.ERR_DATA_INTEGRITY_VIOLATION.getKey());
         } catch (Exception e) {
             log.error("Exception occurs{}", e);
-            throw new UserException(EnumStatus.ERR_GENERICO.getKey());
+            throw new UserException(Status.ERR_GENERICO.getKey());
         }
-        log.info("...END metodo di update della password per l'utente con id [{}]", idUser);
+        log.debug("...END metodo di update della password per l'utente con id [{}]", idUser);
 
     }
 
 
     @Transactional(rollbackFor = UserException.class)
     public void updateUser(Anagrafica anagrafica) throws UserException {
-        log.info("BEGIN metodo di update della password per l'utente con id [{}]", anagrafica.getId());
+        log.debug("BEGIN metodo di update della password per l'utente con id [{}]", anagrafica.getId());
         anagraficaRepository.delete(anagrafica);
         anagraficaRepository.save(anagrafica);
 
-        log.info("...END metodo di update della password per l'utente con id [{}]", anagrafica.getId());
+        log.debug("...END metodo di update della password per l'utente con id [{}]", anagrafica.getId());
 
     }
 }

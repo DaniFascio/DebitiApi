@@ -16,6 +16,7 @@ public class StoricoDebito {
 
     @Id
     @Column(name = "id")
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
 
     @Column(name = "debito")
@@ -30,7 +31,7 @@ public class StoricoDebito {
     private Anagrafica utenteCreditore;
 
     @Column(name = "saldato")
-    private Boolean saldato;
+    private Boolean saldato = false;
 
     @Column(name = "data_inserimento")
     private Date dataInserimento;

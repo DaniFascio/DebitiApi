@@ -41,4 +41,16 @@ public interface StoricoDebitoRepository extends JpaRepository<StoricoDebito,Int
                                                @Param("dataInsA") Date dataInsA, @Param("dataSaldatoDa") Date dataSaldatoDa, @Param("dataSaldatoA") Date dataSaldatoA,
                                                @Param("debitoDa") Double debitoDa, @Param("debitoA") Double debitoA, @Param("saldato") Boolean saldato, Pageable pageable);
 
+    @Query(value = "update storico_debiti set data_saldato = CURRENT_TIMESTAMP, saldato = true  " +
+            " where id = :idDebito ",nativeQuery = true)
+    void salda(@Param("idDebito") Integer idDebito);
+
+
+    @Query(value = "update storico_debiti " +
+            " set debito = :debito, fk_utente_creditore = :creditore, fk_utente_debitore = :debitore, saldato = :saldato,  data_saldato = :dataSaldato " +
+            " where id = :idDebito ",nativeQuery = true)
+    void update(@Param("idDebito") Integer idDebito, @Param("debito") Double debito, @Param("creditore") Integer creditore,
+                @Param("debitore") Integer debitore, @Param("saldato") Boolean saldato, @Param("dataSaldato") Date dataSaldato);
+
+
 }

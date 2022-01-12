@@ -16,6 +16,7 @@ public abstract class ApiMappings {
     public static final String FIND = "/find";
     public static final String UPDATE = "/update";
     public static final String INSERT = "/insert";
+    public static final String SALDATO = "/saldato";
 
 
 }
