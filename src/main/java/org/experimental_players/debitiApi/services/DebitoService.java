@@ -18,5 +18,7 @@ public interface DebitoService {
 
     StoricoDebito salda(Integer idDebito);
 
+    StoricoDebito delete(Integer idDebito);
+
 
 }

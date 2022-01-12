@@ -17,7 +17,7 @@ public interface StoricoDebitoRepository extends JpaRepository<StoricoDebito,Int
 
 
     @Query(value = "select new org.experimental_players.debitiApi.responses.SearchDebitiResponse(CONCAT(a1.nome , ' ' , a1.cognome),CONCAT(a2.nome , ' ' , a2.cognome) , " +
-            " sd.dataInserimento, sd.dataSaldato, sd.debito, sd.saldato ) from StoricoDebito sd " +
+            " sd.dataInserimento, sd.dataSaldato, sd.debito, sd.saldato, sd.valido ) from StoricoDebito sd " +
             " join Anagrafica a1 on a1.id = sd.utenteDebitore.id " +
             " join Anagrafica a2 on a2.id = sd.utenteCreditore.id " +
             " where ((upper(a1.nome) like :debitore and :debitore <> '') or (upper(a1.cognome) like :debitore and :debitore <> '') " +
@@ -35,22 +35,29 @@ public interface StoricoDebitoRepository extends JpaRepository<StoricoDebito,Int
             " or ((coalesce(:dataInsA, null) is null and coalesce(:debitoDa, null) is not null) and sd.dataInserimento >= :dataSaldatoDa) " +
             " or (sd.dataSaldato between :dataSaldatoDa and :dataSaldatoA )))) " +
             " and ((sd.saldato = :saldato and :saldato is not null) or (sd.saldato is not null and :saldato is null)) " +
+            " and ((sd.valido = :valido and :valido is not null) or (sd.valido is not null and :valido is null)) " +
             " order by sd.dataInserimento "
             ,nativeQuery = false)
     Page<SearchDebitiResponse> findAllByFilter(@Param("debitore") String debitore, @Param("creditore") String creditore, @Param("dataInsDa") Date dataInsDa,
                                                @Param("dataInsA") Date dataInsA, @Param("dataSaldatoDa") Date dataSaldatoDa, @Param("dataSaldatoA") Date dataSaldatoA,
-                                               @Param("debitoDa") Double debitoDa, @Param("debitoA") Double debitoA, @Param("saldato") Boolean saldato, Pageable pageable);
+                                               @Param("debitoDa") Double debitoDa, @Param("debitoA") Double debitoA, @Param("saldato") Boolean saldato, @Param("valido") Boolean valido,
+                                               Pageable pageable);
 
     @Query(value = "update storico_debiti set data_saldato = CURRENT_TIMESTAMP, saldato = true  " +
             " where id = :idDebito ",nativeQuery = true)
-    void salda(@Param("idDebito") Integer idDebito);
+    Integer salda(@Param("idDebito") Integer idDebito);
 
 
     @Query(value = "update storico_debiti " +
-            " set debito = :debito, fk_utente_creditore = :creditore, fk_utente_debitore = :debitore, saldato = :saldato,  data_saldato = :dataSaldato " +
+            " set debito = :debito, fk_utente_creditore = :creditore, fk_utente_debitore = :debitore, saldato = :saldato,  " +
+            "     data_saldato = :dataSaldato, valido = :valido " +
             " where id = :idDebito ",nativeQuery = true)
-    void update(@Param("idDebito") Integer idDebito, @Param("debito") Double debito, @Param("creditore") Integer creditore,
-                @Param("debitore") Integer debitore, @Param("saldato") Boolean saldato, @Param("dataSaldato") Date dataSaldato);
+    Integer update(@Param("idDebito") Integer idDebito, @Param("debito") Double debito, @Param("creditore") Integer creditore,
+                @Param("debitore") Integer debitore, @Param("saldato") Boolean saldato, @Param("dataSaldato") Date dataSaldato, @Param("valido") Boolean valido);
 
+
+    @Query(value = "update storico_debiti set valido = false  " +
+            " where id = :idDebito ",nativeQuery = true)
+    Integer setValidoFalse(@Param("idDebito") Integer idDebito);
 
 }

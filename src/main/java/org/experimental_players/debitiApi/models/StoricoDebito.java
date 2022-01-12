@@ -3,7 +3,6 @@ package org.experimental_players.debitiApi.models;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-
 import javax.persistence.*;
 import java.util.Date;
 
@@ -39,6 +38,7 @@ public class StoricoDebito {
     @Column(name = "data_saldato")
     private Date dataSaldato;
 
-
+    @Column(name = "valido")
+    private Boolean valido = true;
 
 }

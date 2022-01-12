@@ -52,7 +52,7 @@ public class DebitoServiceImpl implements DebitoService {
 
         Page<SearchDebitiResponse> pageDebts = storicoDebitoRepository.findAllByFilter(filter.getNominativoDebitore(), filter.getNominativoCreditore(),
                 filter.getDataCreazioneDa(), filter.getDataCreazioneA(), filter.getDataSaldatoDa(), filter.getDataSaldatoA(),
-                filter.getDebitoDa(), filter.getDebitoA(), filter.getSaldato(), pageable);
+                filter.getDebitoDa(), filter.getDebitoA(), filter.getSaldato(), filter.getValido(), pageable);
 
         log.debug("End findAll()... DebitoServiceImpl");
         return pageDebts;
@@ -66,11 +66,10 @@ public class DebitoServiceImpl implements DebitoService {
 
         try {
 
-        storicoDebito = setDefaultDebito(newDebitoRequest);
-        storicoDebitoRepository.save(storicoDebito);
+            storicoDebito = setDefaultDebito(newDebitoRequest);
+            storicoDebitoRepository.save(storicoDebito);
 
-        }
-        catch (Exception e){
+        } catch (Exception e) {
             log.debug(Status.ERR_INSERT.getKey());
         }
 
@@ -83,7 +82,7 @@ public class DebitoServiceImpl implements DebitoService {
     public StoricoDebito update(UpdateDebitoRequest updateDebitoRequest) {
         log.debug("Begin update(UpdateDebitoRequest)... DebitoServiceImpl");
 
-        StoricoDebito storicoDebito = null;
+        StoricoDebito storicoDebito = new StoricoDebito();
         try {
             Optional<StoricoDebito> optDebito = storicoDebitoRepository.findById(updateDebitoRequest.getIdDebito());
             if (optDebito.isPresent())
@@ -92,8 +91,9 @@ public class DebitoServiceImpl implements DebitoService {
                 throw new Exception();
 
             setDefaultDebitoForUpdate(storicoDebito, updateDebitoRequest);
-            storicoDebitoRepository.update(storicoDebito.getId(), storicoDebito.getDebito(),storicoDebito.getUtenteCreditore().getId(),
-                                            storicoDebito.getUtenteDebitore().getId(),storicoDebito.getSaldato(),storicoDebito.getDataSaldato());
+
+            Integer num = storicoDebitoRepository.update(storicoDebito.getId(), storicoDebito.getDebito(), storicoDebito.getUtenteCreditore().getId(),
+                    storicoDebito.getUtenteDebitore().getId(), storicoDebito.getSaldato(), storicoDebito.getDataSaldato(), storicoDebito.getValido());
 
         } catch (Exception e) {
             log.debug(Status.ERR_UPDATE.getKey());
@@ -116,7 +116,31 @@ public class DebitoServiceImpl implements DebitoService {
             else
                 throw new Exception();
 
-            storicoDebitoRepository.salda(idDebito);
+            Integer num = storicoDebitoRepository.salda(idDebito);
+
+        } catch (Exception e) {
+            log.debug(Status.ERR_UPDATE.getKey());
+        }
+
+        return storicoDebito;
+    }
+
+    @Override
+    public StoricoDebito delete(Integer idDebito) {
+        log.debug("Begin delete(Integer)... DebitoServiceImpl: " + idDebito);
+
+        StoricoDebito storicoDebito = null;
+        try {
+
+            Optional<StoricoDebito> optDebito = storicoDebitoRepository.findById(idDebito);
+            if (optDebito.isPresent())
+                storicoDebito = optDebito.get();
+            else
+                throw new Exception();
+
+            Integer num = storicoDebitoRepository.setValidoFalse(idDebito);
+            storicoDebito.setValido(false);
+
 
         } catch (Exception e) {
             log.debug(Status.ERR_UPDATE.getKey());
@@ -173,10 +197,17 @@ public class DebitoServiceImpl implements DebitoService {
             else
                 throw new UserException(String.valueOf(Status.WARN_NO_SUCH_ELEMENT));
 
-            if (updateDebitoRequest.getSaldato()) {
-                storicoDebito.setSaldato(true);
-                storicoDebito.setDataSaldato(updateDebitoRequest.getDataSaldato());
+            if (updateDebitoRequest.getSaldato()!=null) {
+                if (updateDebitoRequest.getSaldato()) {
+                    storicoDebito.setSaldato(true);
+                    storicoDebito.setDataSaldato(updateDebitoRequest.getDataSaldato());
+                }
+                else
+                    storicoDebito.setSaldato(false);
             }
+
+            if (updateDebitoRequest.getValido()!=null)
+            storicoDebito.setValido(updateDebitoRequest.getValido());
 
         } catch (Exception e) {
             throw new Exception(Status.ERR_GENERICO.getKey());

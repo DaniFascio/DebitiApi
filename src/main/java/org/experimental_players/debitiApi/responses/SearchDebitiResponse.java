@@ -16,6 +16,7 @@ public class SearchDebitiResponse {
     private Date dataCreazione;
     private Date dataSaldato;
     private Double debito;
-    private Boolean saldato = false;
+    private Boolean saldato;
+    private Boolean valido;
 
 }

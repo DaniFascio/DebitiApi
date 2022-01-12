@@ -20,6 +20,7 @@ public class SearchDebitiRequest {
     private Date dataSaldatoDa;
     private Date dataSaldatoA;
     private Boolean saldato = false;
+    private Boolean valido = true;
     private Double debitoDa;
     private Double debitoA;
 

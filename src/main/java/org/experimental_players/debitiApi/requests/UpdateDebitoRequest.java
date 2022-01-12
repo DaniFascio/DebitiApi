@@ -7,16 +7,27 @@ import lombok.NoArgsConstructor;
 import java.util.Date;
 
 @Data
-@NoArgsConstructor
-@AllArgsConstructor
 public class UpdateDebitoRequest {
 
     private Integer idDebito;
     private Integer idNominativoDebitore;
     private Integer idNominativoCreditore;
     private Date dataSaldato;
-    private Boolean saldato = false;
+    private Boolean saldato;
     private Double debito;
+    private Boolean valido;
 
+
+    public UpdateDebitoRequest(Integer idDebito, Integer idNominativoDebitore, Integer idNominativoCreditore,
+                               Date dataSaldato, Boolean saldato, Double debito, Boolean valido) {
+
+        this.idDebito = idDebito;
+        this.idNominativoDebitore = idNominativoDebitore;
+        this.idNominativoCreditore = idNominativoCreditore;
+        this.dataSaldato = dataSaldato;
+        this.saldato = saldato;
+        this.debito = debito;
+        this.valido = valido;
+    }
 
 }
