@@ -12,6 +12,8 @@ public interface DebitoService {
 
     Page<SearchDebitiResponse> findAll(SearchDebitiRequest searchDebitiRequest);
 
+    Double totaleDebtUser(Integer idUser);
+
     StoricoDebito insert(NewDebitoRequest newDebitoRequest) throws Exception;
 
     StoricoDebito update(UpdateDebitoRequest updateDebitoRequest);

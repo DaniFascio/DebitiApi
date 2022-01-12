@@ -27,6 +27,14 @@ public class DebitoController extends BaseController {
 
     }
 
+    @PostMapping(ApiMappings.TOTALE_DEBT_USER)
+    public HttpEntity<?> findTotDebtUser(@RequestBody IntegerRequest idUser) {
+
+        log.debug("Begin findTotDebtUser(IntegerRequest)..." + idUser.getId());
+        return new HttpEntity<>(debitoService.totaleDebtUser(idUser.getId()));
+
+    }
+
     @PostMapping(ApiMappings.INSERT)
     public HttpEntity<?> insert(@RequestBody NewDebitoRequest newDebitoRequest) throws Exception {
 
@@ -46,7 +54,7 @@ public class DebitoController extends BaseController {
     @PostMapping(ApiMappings.SALDATO)
     public HttpEntity<?> salda(@RequestBody IntegerRequest idDebito) {
 
-        log.debug("Begin salda(IntegerRequest)..." + idDebito.getId().toString());
+        log.debug("Begin salda(IntegerRequest)..." + idDebito.getId());
         return new HttpEntity<>(debitoService.salda(idDebito.getId()));
 
     }
@@ -54,7 +62,7 @@ public class DebitoController extends BaseController {
     @PostMapping(ApiMappings.DELETE)
     public HttpEntity<?> delete(@RequestBody IntegerRequest idDebito) {
 
-        log.debug("Begin delete(IntegerRequest)..." + idDebito.getId().toString());
+        log.debug("Begin delete(IntegerRequest)..." + idDebito.getId());
         return new HttpEntity<>(debitoService.delete(idDebito.getId()));
 
     }

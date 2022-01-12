@@ -13,7 +13,7 @@ public abstract class ApiMappings {
     public static final String LOGOUT = "/logout";
 
     public static final String FIND_ALL = "/findAll";
-    public static final String FIND = "/find";
+    public static final String TOTALE_DEBT_USER = "/totaleDebitoUser";
     public static final String UPDATE = "/update";
     public static final String INSERT = "/insert";
     public static final String SALDATO = "/saldato";

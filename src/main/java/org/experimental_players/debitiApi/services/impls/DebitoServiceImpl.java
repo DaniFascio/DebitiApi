@@ -18,6 +18,7 @@ import org.springframework.data.domain.*;
 import org.springframework.stereotype.Service;
 
 import java.util.Date;
+import java.util.List;
 import java.util.Locale;
 import java.util.Optional;
 
@@ -56,6 +57,20 @@ public class DebitoServiceImpl implements DebitoService {
 
         log.debug("End findAll()... DebitoServiceImpl");
         return pageDebts;
+    }
+
+    @Override
+    public Double totaleDebtUser(Integer idUser) {
+
+        List<StoricoDebito> list = storicoDebitoRepository.findAllByUtenteDebitore_Id(idUser);
+        Double tot = 0.0;
+
+        for (StoricoDebito storicoDebito : list) {
+            tot += storicoDebito.getDebito();
+
+        }
+
+        return tot;
     }
 
     @Override
@@ -197,17 +212,16 @@ public class DebitoServiceImpl implements DebitoService {
             else
                 throw new UserException(String.valueOf(Status.WARN_NO_SUCH_ELEMENT));
 
-            if (updateDebitoRequest.getSaldato()!=null) {
+            if (updateDebitoRequest.getSaldato() != null) {
                 if (updateDebitoRequest.getSaldato()) {
                     storicoDebito.setSaldato(true);
                     storicoDebito.setDataSaldato(updateDebitoRequest.getDataSaldato());
-                }
-                else
+                } else
                     storicoDebito.setSaldato(false);
             }
 
-            if (updateDebitoRequest.getValido()!=null)
-            storicoDebito.setValido(updateDebitoRequest.getValido());
+            if (updateDebitoRequest.getValido() != null)
+                storicoDebito.setValido(updateDebitoRequest.getValido());
 
         } catch (Exception e) {
             throw new Exception(Status.ERR_GENERICO.getKey());

@@ -10,6 +10,7 @@ import org.experimental_players.debitiApi.models.StoricoDebito;
 import org.experimental_players.debitiApi.responses.SearchDebitiResponse;
 
 import java.util.Date;
+import java.util.List;
 
 @Repository
 public interface StoricoDebitoRepository extends JpaRepository<StoricoDebito,Integer> {
@@ -59,5 +60,7 @@ public interface StoricoDebitoRepository extends JpaRepository<StoricoDebito,Int
     @Query(value = "update storico_debiti set valido = false  " +
             " where id = :idDebito ",nativeQuery = true)
     Integer setValidoFalse(@Param("idDebito") Integer idDebito);
+
+    List<StoricoDebito> findAllByUtenteDebitore_Id(Integer id);
 
 }
