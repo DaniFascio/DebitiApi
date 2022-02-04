@@ -1,5 +1,6 @@
 package org.experimentalplayers.debiti_api.services.impls;
 
+import com.sun.xml.bind.v2.TODO;
 import lombok.extern.slf4j.Slf4j;
 import org.experimentalplayers.debiti_api.configs.Status;
 import org.experimentalplayers.debiti_api.exceptions.UserException;
@@ -42,6 +43,7 @@ public class DebitoServiceImpl implements DebitoService {
 
         Pageable pageable = PageRequest.of(pagination.getOffset(), 10, Sort.Direction.ASC, pagination.getOrderBy());
 
+        //TO DO: controllare corretto funzionamento ricerca per nominativi, possibile errore settaggio regex.
         filter.setNominativoDebitore(filter.getNominativoDebitore().toUpperCase(Locale.ROOT).replaceAll("\\s+", "").replace("", "%"));
         filter.setNominativoCreditore(filter.getNominativoCreditore().toUpperCase(Locale.ROOT).replaceAll("\\s+", "").replace("", "%"));
 
