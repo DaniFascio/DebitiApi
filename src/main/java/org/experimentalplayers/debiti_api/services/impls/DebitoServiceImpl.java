@@ -43,7 +43,7 @@ public class DebitoServiceImpl implements DebitoService {
 
         Pageable pageable = PageRequest.of(pagination.getOffset(), 10, Sort.Direction.ASC, pagination.getOrderBy());
 
-        //TO DO: controllare corretto funzionamento ricerca per nominativi, possibile errore settaggio regex.
+        //TODO: controllare corretto funzionamento ricerca per nominativi, possibile errore settaggio regex.
         filter.setNominativoDebitore(filter.getNominativoDebitore().toUpperCase(Locale.ROOT).replaceAll("\\s+", "").replace("", "%"));
         filter.setNominativoCreditore(filter.getNominativoCreditore().toUpperCase(Locale.ROOT).replaceAll("\\s+", "").replace("", "%"));
 
