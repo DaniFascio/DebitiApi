@@ -10,9 +10,14 @@
 		<relativePath/> <!-- lookup parent from repository -->
 	</parent>
 
+	<scm>
+		<connection>scm:git:https://github.com/DaniFascio/DebitiApi.git</connection>
+	</scm>
+
+
 	<groupId>org.experimentalplayers</groupId>
 	<artifactId>DebitiApi</artifactId>
-	<version>0.0.1-SNAPSHOT</version>
+	<version>0.1.0-SNAPSHOT</version>
 
 	<name>DebitiApi</name>
 	<description>DebitiApi</description>
@@ -100,6 +105,7 @@
 		<dependency>
 			<groupId>org.projectlombok</groupId>
 			<artifactId>lombok</artifactId>
+			<version>1.18.22</version>
 			<optional>true</optional>
 		</dependency>
 
@@ -143,6 +149,23 @@
 						</exclude>
 					</excludes>
 				</configuration>
+			</plugin>
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-scm-plugin</artifactId>
+				<version>1.5</version>
+				<configuration>
+					<tagBase>http://github.com/DaniFascio/DebitiApi/tags</tagBase>
+					<tag>${project.artifactId}.${project.version}</tag>
+				</configuration>
+				<executions>
+					<execution>
+						<id>create-tag</id>
+						<goals>
+							<goal>tag</goal>
+						</goals>
+					</execution>
+				</executions>
 			</plugin>
 		</plugins>
 	</build>
